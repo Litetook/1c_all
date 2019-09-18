@@ -38,9 +38,10 @@
 
     #uncomment and change block if you need backups files to net folder
     ### net backup dir
-        net use B: \\192.168.1.227\share_test /user:Dmitriy 1402mda@
 
-        $deletenetdisk="net use B: /delete"
+        $addnetdisk="net use B: \\192.168.1.227\share_test /user:Dmitriy 1402mda@"
+
+        $deletenetdisk="net use B: /delete /y"
 
         $bnetdir="B:\"
 
@@ -76,7 +77,6 @@
 function clearing_bases_backups 
 
 {
-       
         write-host "clearing_bases_backups"
 
         #clear empty path from script if net folder may be not set
@@ -85,8 +85,7 @@ function clearing_bases_backups
     
         foreach ($path in $clearingpath) 
         {
-       
-
+      
             foreach ($item in $alllist) 
             
             {
@@ -96,16 +95,16 @@ function clearing_bases_backups
             }        
 
             write-host "clearing in folder ended"
-        
         }
-
 }
 
 
 
 #------------------------------------------------------MAIN CODE--------------------------------------------------------------------------
 
+#connect to net folder
 
+Invoke-Expression $addnetdisk
 
 #dir list in root backup folder
 
@@ -119,7 +118,6 @@ foreach ($base in $8sqlbase)
 
 	$basedirchecker=$bdirlist | select-string -pattern "$base"
 
-
 	If ($basedirchecker -eq $null) 
         {
 
@@ -127,21 +125,17 @@ foreach ($base in $8sqlbase)
 
 		}
 
-
-	#Протестувати вигрузка бази в папку
+	#Tested!
     taskkill /im 1cv8* /f /t 
     
     start-process $1c8file -argumentlist "CONFIG /S $1cservname\$base /N $baselogin /P $basepass /DumpIB $brootdir\$base\$base-$date.dt"
 
     timeout /t 240 /nobreak
 
-
 } 
-
 	
-# TO TEST!Вигрузка 1с 7.7. Робить дату в форматі 1c77_25.08.2019.7z. 
+#This block make 1c_7.7 bases backup, that named like "1c77_25.08.2019.7z"
 $basedirchecker=$bdirlist | select-string -pattern "$1c77backupfolder"
-
 
 	If ($basedirchecker -eq $null) 
         {
@@ -154,7 +148,7 @@ start-process -filepath "$7zip" -argumentlist "a $brootdir\$1c77backupfolder\$1c
 
 timeout /t 300 /nobreak
 
-#WORKING TESTED
+#ROBOCOPY AND WORKING TESTED
 
 if ($bnetdir -ne $null) 
 
@@ -164,4 +158,4 @@ if ($bnetdir -ne $null)
 
 clearing_bases_backups
 
-$deletenetdisk
+Invoke-Expression $deletenetdisk
