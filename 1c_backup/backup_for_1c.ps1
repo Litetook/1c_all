@@ -10,12 +10,12 @@
     $1c77backupfolder="7.7"
 
     #### 7zip for 1c backups
+    
     $7zip="c:\Program Files\7-Zip\7z.exe"
 
 ################# 1c 8.3 sql block
-
     #### 1c8sql bases
-    $8sqlbase=@('adler',
+        $8sqlbase=@('adler',
 	    'adler-firm',
 	    'adler-work',
 	    'company',
@@ -53,10 +53,7 @@
 ############### clearing block
     
     ### ALL LIST TO CLEARING BACKUPS.
-    <#$alllist=($8sqlbase + 
-    'medoc', 
-    "$1c77backupfolder")#>
-
+   
     $alllist=($8sqlbase +  
     "$1c77backupfolder")
 
@@ -72,6 +69,7 @@
 ##############custom variables block
 
     #### current date
+    
     $date= Get-Date -format "dd-MM-yyyy"
 
 
@@ -130,6 +128,7 @@ foreach ($base in $8sqlbase)
 		}
 
 	#Tested!
+
     taskkill /im 1cv8* /f /t 
     
     write-output "outload $base backup"
@@ -137,11 +136,10 @@ foreach ($base in $8sqlbase)
     start-process $1c8file -argumentlist "CONFIG /S $1cservname\$base /N $baselogin /P $basepass /DumpIB $brootdir\$base\$base-$date.dt" -wait
 
 
-    #timeout /t 240 /nobreak
-
 } 
 	
 #This block make 1c_7.7 bases backup, that named like "1c77_25.08.2019.7z"
+
 $basedirchecker=$bdirlist | select-string -pattern "$1c77backupfolder"
 
 	If ($basedirchecker -eq $null) 
@@ -153,9 +151,8 @@ $basedirchecker=$bdirlist | select-string -pattern "$1c77backupfolder"
 	
 start-process -filepath "$7zip" -argumentlist "a $brootdir\$1c77backupfolder\$1c77backupfolder-$date.7z $1c77basedir" -wait
 
-#timeout /t 300 /nobreak
 
-#ROBOCOPY AND WORKING TESTED
+#ROBOCOPY TESTED
 
 if ($bnetdir -ne $null) 
 
