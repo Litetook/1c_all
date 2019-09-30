@@ -5,15 +5,16 @@
 
 
 ################# 1c 7.7 block
-    $1c77basedir="c:\1c77_bases"
+        $1c77basedir="c:\1c77_bases"
 
-    $1c77backupfolder="7.7"
+        $1c77backupfolder="7.7"
 
     #### 7zip for 1c backups
     
-    $7zip="c:\Program Files\7-Zip\7z.exe"
+        $7zip="c:\Program Files\7-Zip\7z.exe"
 
 ################# 1c 8.3 sql block
+
     #### 1c8sql bases
         $8sqlbase=@('adler',
 	    'adler-firm',
@@ -22,23 +23,22 @@
 	    'kondor') 
 
     #### 1c file path
-    $1c8file='C:\Program Files (x86)\1cv8\8.3.12.1616\bin\1cv8s.exe'
+        $1c8file='C:\Program Files (x86)\1cv8\8.3.12.1616\bin\1cv8s.exe'
 
     #### 1c dns serv name
-    $1cservname="server1c"
+        $1cservname="server1c"
 
     #### universal login to base
-    $baselogin="admin"
+        $baselogin="admin"
 
     #### pass to login
-    $basepass="1402"
-
+        $basepass="1402"
 
 #################backup folders block
 
 
     #### main backup dir
-    $brootdir="D:\backup_1c" 
+        $brootdir="D:\backup_1c\" 
 
     #uncomment and change block if you need backups files to net folder
     ### net backup dir
@@ -54,8 +54,8 @@
     
     ### ALL LIST TO CLEARING BACKUPS.
    
-    $alllist=($8sqlbase +  
-    "$1c77backupfolder")
+        $alllist=($8sqlbase +  
+        "$1c77backupfolder")
 
     #path for clearing old backups
 
@@ -70,7 +70,7 @@
 
     #### current date
     
-    $date= Get-Date -format "dd-MM-yyyy"
+        $date= Get-Date -format "dd-MM-yyyy"
 
 
 #------------------------------------------------------FUNCTIONS--------------------------------------------------------------------------
@@ -133,7 +133,7 @@ foreach ($base in $8sqlbase)
     
     write-output "outload $base backup"
 
-    start-process $1c8file -argumentlist "CONFIG /S $1cservname\$base /N $baselogin /P $basepass /DumpIB $brootdir\$base\$base-$date.dt" -wait
+    start-process $1c8file -argumentlist "CONFIG /S $1cservname\$base /N $baselogin /P $basepass /DumpIB $brootdir$base\$base-$date.dt" -wait
 
 
 } 
@@ -149,7 +149,7 @@ $basedirchecker=$bdirlist | select-string -pattern "$1c77backupfolder"
 
 		}
 	
-start-process -filepath "$7zip" -argumentlist "a $brootdir\$1c77backupfolder\$1c77backupfolder-$date.7z $1c77basedir" -wait
+start-process -filepath "$7zip" -argumentlist "a $brootdir$1c77backupfolder\$1c77backupfolder-$date.7z $1c77basedir" -wait
 
 
 #ROBOCOPY TESTED
