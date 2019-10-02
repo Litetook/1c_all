@@ -19,6 +19,7 @@
         $8sqlbase=@('adler',
 	    'adler-firm',
 	    'adler-work',
+        'adler-kondor',
 	    'company',
 	    'kondor') 
 
@@ -64,7 +65,7 @@
 
     #counter days for delete files
 
-        $daycount="5"
+        $daycount="7"
 
 ##############custom variables block
 
