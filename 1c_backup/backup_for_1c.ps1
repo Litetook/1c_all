@@ -1,7 +1,7 @@
 #------------------------------------------------------VARIABLES--------------------------------------------------------------------------
 
-##NEED TO TEST CLEARING FUNCTION
-##NEED TO TEST does CLEARING go before ROBOCOPY
+##SCRIPT COPYING FROM BROOTDIR ALL TO NET FOLDER
+##CLEARS IN ASKED FOLDERS BY DATE
 
 
 ################# 1c 7.7 block
@@ -149,6 +149,8 @@ $basedirchecker=$bdirlist | select-string -pattern "$1c77backupfolder"
 		    new-item -Name $1c77backupfolder -ItemType directory -force -path $brootdir
 
 		}
+
+taskkill /im 1cv7* /f /t 
 	
 start-process -filepath "$7zip" -argumentlist "a $brootdir$1c77backupfolder\$1c77backupfolder-$date.7z $1c77basedir" -wait
 
